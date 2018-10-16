@@ -10,10 +10,9 @@
 
 function Project
 
-Number = 6;
+Number = 1;
 % 0     - Display Essentials
 % 1     - Section 1
-% 12    - Section 1 on other Data Sample
 % 2     - Section 2
 % 3     - Section 3
 % 4     - Section 4
@@ -46,36 +45,12 @@ WidthAccel_Other= info_other(2,:);
 %Getting width acceleration data size
 
 
-%Getting Steps
-Step1= WidthAccel(:,1:7680);
-Step1_Other= WidthAccel_Other(:,1:7680);
-%Step1 = timeseries(info(2,:), 1:7680,'name', 'Step1');
 
-Step2= WidthAccel(:,7681:15360);
-Step2_Other= WidthAccel_Other(:,7681:15360);
-%Step2 = timeseries(info(2,:), 1:7680,'name', 'Step2');
 
-Step3= WidthAccel(:,15361:23040);
-Step3_Other= WidthAccel_Other(:,15361:23040);
-%Step3 = timeseries(info(2,:), 1:7680,'name', 'Step3');
-
-Step4= WidthAccel(:,23041:30720);
-Step4_Other= WidthAccel_Other(:,23041:30720);
-%Step4 = timeseries(info(2,:), 1:7680,'name', 'Step4');
-
-Step5= WidthAccel(:,30721:37713);
-Step5_Other= WidthAccel_Other(:,30721:32373);
-%Step5 = timeseries(info(2,:), 1:7680,'name', 'Step5');
-
-%Getting Steps
-
-Width_ft = fft(WidthAccel);
+%Width_ft = fft(WidthAccel);
 %Fourier transformation for Samples
-signal=fftshift(Width_ft);
+%signal=fftshift(Width_ft);
 %Shifting the axis to 0 before filtering 
-
-
-
 
 
 
@@ -86,42 +61,106 @@ switch Number
         
                
         
+        %{
+        figure('Name','Samples of Steps for Width Accel');
         
-        figure('Name','3 Axses of Accelerometer');
-        
-               
+         
         subplot(311);
-        plot(HeightAccel);
-        title('Height Acceleration')
+        plot(WidthAccel(:,1100:1800));
+        title('Sample 1100-1800')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
-
+        
         subplot(312);
-        plot(WidthAccel);
-        title('Width Acceleration')
+        plot(WidthAccel(:,1800:2500));
+        title('Sample 1800-2500')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
 
 
         subplot(313);
-        plot(LengthAccel);
-        title('Length Acceleration')
+        plot(WidthAccel(:,3200:3900));
+        title('Sample 3200-3900')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
-        plot(WidthAccel_Other);
-        title('Acceleration By Width Axis')
-        xlabel('Time (Seconds)');
-        ylabel('Acceleration(m/s^2)');       
+           
         
+        
+        
+          figure('Name','Samples of Steps for Length Accel');
+        
+         
+        subplot(311);
+        plot(LengthAccel(:,1100:1800));
+        title('Sample 1100-1800')
+        xlabel('Time (MilliSeconds)');
+        ylabel('Acceleration(m/s^2)');
+        
+        subplot(312);
+        plot(LengthAccel(:,1800:2500));
+        title('Sample 1800-2500')
+        xlabel('Time (MilliSeconds)');
+        ylabel('Acceleration(m/s^2)');
 
+
+        subplot(313);
+        plot(LengthAccel(:,3200:3900));
+        title('Sample 3200-3900')
+        xlabel('Time (MilliSeconds)');
+        ylabel('Acceleration(m/s^2)');
+        %}
+        
+        
+        
+        %{
+        figure('Name','Sample of a step in Width Acceleration');
+        plot(WidthAccel(:,1100:1250));
+        
+        figure('Name','Sample of a step in Length Acceleration');
+        plot(LengthAccel(:,1840:2140));
+        
+        
+        %}
+        
+        
+        
+        figure('Name','Sample of a few steps in Width Acceleration');
+        plot(WidthAccel(:,800:1250));
+        
+         figure('Name','Sample of a few steps in Width Acceleration');
+        plot(WidthAccel(:,1500:3000));
+        
+        
+        figure('Name','Sample of a few steps in Length Acceleration');
+        plot(LengthAccel(:,900:1700));
+        
+        figure('Name','Sample of a few steps in Length Acceleration');
+        plot(LengthAccel(:,1840:2440));
+        
+        
 
     
     case 1  
+        %Getting Steps
+        [Seperated,counterSteps]= SeperateSteps(WidthAccel)
+
+
+        Step1= Seperated(1,:);
+
+        Step2= Seperated(2,:);
+
+        Step3= Seperated(3,:);
+
+        Step4= Seperated(4,:);
+
+        Step5= Seperated(5,:);
+        %Getting Steps
+        
 
 
         %Displaying width acceleration
         scrsz = get(0,'ScreenSize');
-        figure('Position',[1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2], 'Name','All the steps')
+        figure('Position',[1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2], 'Name','All the movement')
         %figure('Name','All the steps');
         plot(WidthAccel);
         title('Acceleration By Width Axis')
@@ -170,74 +209,30 @@ switch Number
 
 
 
-    case 12  
-
-        %Displaying width acceleration
-        scrsz = get(0,'ScreenSize');
-        figure('Position',[1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2], 'Name','All the steps')
-        %figure('Name','All the steps');
-        plot(WidthAccel_Other);
-        title('Acceleration By Width Axis')
-        xlabel('Time (Seconds)');
-        ylabel('Acceleration(m/s^2)');
-
-        
-
-        %Displaying width acceleration By steps
-        figure('Position',[scrsz(3)/2 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2], 'Name','Division of the movement into steps');
-
-
-        subplot(511);
-        plot(Step1_Other);
-        title('First Step')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-
-        subplot(512);
-        plot(Step2_Other);
-        title('Second Step')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-
-        subplot(513);
-        plot(Step3_Other);
-        title('Third Step')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-
-        subplot(514);
-        plot(Step4_Other);
-        title('Fourth Step')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-
-
-        subplot(515);
-        plot(Step5_Other);
-        title('Fifth Step')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-        %Displaying width acceleration By steps
 
 
     case 2
         
         c=3;             
-         
+         %{
         [w1,f1] = frequencyVector(1:7680,Step1);        
-        Step1_Filtered = myHPF(w1, Step1, c)         
+        Step1_Filtered = myHPF(w1, Step1, c) 
+        %}
         
-        [w2,f2] = frequencyVector(1:7680,Step2);        
-        Step2_Filtered = myHPF(w2, Step2, c) 
+        [Seperated,counterSteps]= SeperateSteps(WidthAccel)
         
-        [w3,f3] = frequencyVector(1:7680,Step3); 
-        Step3_Filtered = myHPF(w3, Step3, c) 
+        [RealSeperated,RealcounterSteps]= RemoveAbnormal(Seperated)
+               
         
-        [w4,f4] = frequencyVector(1:7680,Step4);
-        Step4_Filtered = myHPF(w4, Step4, c) 
-        
-        [w5,f5] = frequencyVector(1:7680,Step5);
-        Step5_Filtered = myHPF(w5, Step5, c) 
+        Step1= RealSeperated(1,:);
+
+        Step2= RealSeperated(2,:);
+
+        Step3= RealSeperated(3,:);
+
+        Step4= RealSeperated(4,:);
+
+        Step5= RealSeperated(5,:);
         
        
         scrsz = get(0,'ScreenSize');
@@ -326,108 +321,107 @@ switch Number
         n = 4;        
         str = 'symmetric';
         
+        [Seperated,counterSteps]= SeperateSteps(WidthAccel)
         
-        Axis1_Filtered = myMedFilt(HeightAccel, n, str);
-        Axis2_Filtered = myMedFilt(WidthAccel, n, str);
-        Axis3_Filtered = myMedFilt(LengthAccel, n, str);
+        [RealSeperated,RealcounterSteps]= RemoveAbnormal(Seperated)
+               
         
-        scrsz = get(0,'ScreenSize');
-         %Displaying Unfiltered Steps
-        figure('Position',[1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2], 'Name','3 Axses Before Median Signal Calc')
+        Step1_Filtered= myMedFilt(RealSeperated(1,:), n, str); 
+
+        Step2_Filtered= myMedFilt(RealSeperated(2,:), n, str); 
+
+        Step3_Filtered= myMedFilt(RealSeperated(3,:), n, str); 
         
-        subplot(311);
-        plot(HeightAccel);
-        title('Height Acceleration')
+        Step4_Filtered= myMedFilt(RealSeperated(4,:), n, str); 
+
+        Step5_Filtered= myMedFilt(RealSeperated(5,:), n, str); 
+        
+        
+        %Axis1_Filtered = 
+        %Axis1_Filtered= medfilt1(HeightAccel,3);
+        
+        %Axis2_Filtered = myMedFilt(WidthAccel, n, str);
+        %Axis2_Filtered= medfilt1(WidthAccel,3);
+        
+        %Axis3_Filtered = myMedFilt(LengthAccel, n, str);
+        %Axis3_Filtered =medfilt1(LengthAccel,3);
+        
+        
+        
+        figure('Position',[scrsz(3)/2 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2], 'Name','Steps After Median Signal Calc');
+        
+        subplot(511);
+        plot(Step1_Filtered);
+        title('Step 1')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
 
-        subplot(312);
-        plot(WidthAccel);
-        title('Width Acceleration')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-
-
-        subplot(313);
-        plot(LengthAccel);
-        title('Length Acceleration')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-        plot(WidthAccel_Other);
-        title('Acceleration By Width Axis')
-        xlabel('Time (Seconds)');
-        ylabel('Acceleration(m/s^2)');  
-        
-        
-        figure('Position',[scrsz(3)/2 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2], 'Name','3 Axses After Median Signal Calc');
-        
-        subplot(311);
-        plot(Axis1_Filtered);
-        title('Height Acceleration')
-        xlabel('Time (MilliSeconds)');
-        ylabel('Acceleration(m/s^2)');
-
-        subplot(312);
-        plot(Axis2_Filtered);
-        title('Width Acceleration')
+        subplot(512);
+        plot(Step2_Filtered);
+        title('Step 2')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
 
 
-        subplot(313);
-        plot(Axis3_Filtered);
-        title('Length Acceleration')
+        subplot(513);
+        plot(Step3_Filtered);
+        title('Step 3')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
-        plot(WidthAccel_Other);
-        title('Acceleration By Width Axis')
-        xlabel('Time (Seconds)');
-        ylabel('Acceleration(m/s^2)');  
+        
+        
+        
+        subplot(514);
+        plot(Step4_Filtered);
+        title('Step 4')
+        xlabel('Time (MilliSeconds)');
+        ylabel('Acceleration(m/s^2)');        
+        
+        
+        subplot(515);
+        plot(Step5_Filtered);
+        title('Step 5')
+        xlabel('Time (MilliSeconds)');
+        ylabel('Acceleration(m/s^2)');
+        
+        
         
         
     case 4
         
-        n = 4;        
-        str = 'symmetric';
         
-        Axis1_Prc1 = prctile( myMedFilt(HeightAccel, n, str), 10);
-        Axis1_Prc2 = prctile( myMedFilt(HeightAccel, n, str), 90);
+        [Seperated,counterSteps]= SeperateSteps(WidthAccel)
         
-        Axis2_Prc1 = prctile( myMedFilt(WidthAccel, n, str), 10);
-        Axis2_Prc2 = prctile( myMedFilt(WidthAccel, n, str), 90);
+        [RealSeperated,RealcounterSteps]= RemoveAbnormal(Seperated)
+               
         
+        Step1_Prc1= prctile( RealSeperated(1,:), 10); 
+        Step1_Prc2= prctile( RealSeperated(1,:), 90);
         
-        Axis3_Prc1 = prctile( myMedFilt(LengthAccel, n, str), 10);
-        Axis3_Prc2 = prctile( myMedFilt(LengthAccel, n, str), 90);
-        
-        
-        disp('Height Acceleration Precentile 10:');
-        disp(Axis1_Prc1);
-        disp('Height Acceleration Precentile 90:');
-        disp(Axis1_Prc2);
-        disp('Width Acceleration Precentile 10:');
-        disp(Axis2_Prc1);
-        disp('Width Acceleration Precentile 90:');
-        disp(Axis2_Prc2);
-        disp('Length Acceleration Precentile 10:');
-        disp(Axis3_Prc1);
-        disp('Length Acceleration Precentile 90:');
-        disp(Axis3_Prc2);
-        
-        %{ 
-        %Alternative
-        Axis1_Prc1 = prctile(HeightAccel, 10);
-        Axis1_Prc2 = prctile(HeightAccel, 90);
-        
-        Axis2_Prc1 = prctile(WidthAccel, 10);
-        Axis2_Prc2 = prctile(WidthAccel, 90);
+        Step2_Prc1= prctile( RealSeperated(2,:), 10); 
+        Step2_Prc2= prctile( RealSeperated(2,:), 90);
         
         
-        Axis3_Prc1 = prctile(LengthAccel, 10);
-        Axis3_Prc2 = prctile(LengthAccel, 90);
+        Step3_Prc1= prctile( RealSeperated(3,:), 10); 
+        Step3_Prc2= prctile( RealSeperated(3,:), 90);
         
-        %}
+
+     
         
+        
+        disp('Step 1 Precentile 10:');
+        disp(Step1_Prc1);
+        disp('Step 1 Precentile 90:');
+        disp(Step1_Prc2);
+        disp('Step 2 Precentile 10:');
+        disp(Step2_Prc1);
+        disp('Step 2 Precentile 90:');
+        disp(Step2_Prc2);
+        disp('Step 3 Precentile 10:');
+        disp(Step3_Prc1);
+        disp('Step 3 Precentile 90:');
+        disp(Step3_Prc1);
+
         
         
     case 5
@@ -519,31 +513,34 @@ switch Number
         subplot(311)
         plot(Axis1_Filtered);
         hold on
-        plot(Axis1_Prc,'r*')
+        plot(Axis1_Prc1,'r*')
+        plot(Axis1_Prc2,'g*')
         title('Height Acceleration')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
-        legend('Data', 'Perecentiles 10&90')
+        legend('Data', 'Perecentile 10', 'Perecentile 90')
         
         
         subplot(312)
         plot(Axis2_Filtered);
         hold on
-        plot(Axis2_Prc,'r*')
+        plot(Axis2_Prc1,'r*')
+        plot(Axis2_Prc2,'g*')
         title('Width Acceleration')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
-        legend('Data', 'Perecentiles 10&90')
+        legend('Data', 'Perecentile 10', 'Perecentile 90')
         
         
         subplot(313)
         plot(Axis3_Filtered);
         hold on
-        plot(Axis3_Prc,'r*') 
+        plot(Axis3_Prc1,'r*')
+        plot(Axis3_Prc2,'g*') 
         title('Length Acceleration')
         xlabel('Time (MilliSeconds)');
         ylabel('Acceleration(m/s^2)');
-        legend('Data', 'Perecentiles 10&90')
+        legend('Data', 'Perecentile 10', 'Perecentile 90')
         
         %Plot
         
@@ -568,29 +565,41 @@ end
 %---Functions Used in Step 1
 
 
-function [w,f] = frequencyVector(t,s)
+function [Seperated,counterSteps]= SeperateSteps(signal)
+    %temp=zeros(length(signal));
+    isStep=true;
+    counterSteps=0;
+    StepArray= zeros(500,191)
+    %StepArray= zeros(length(signal));
+    %500 steps max, each step is 190 length max
+    
+    for i= 1:length(signal)
+        
+        if(-2< signal(i) && signal(i)< 2)
+            
+            for j= i:60
+                %check all the 60 next places is data to analyze the begining of a normal step
+                if (signal(j)<-3  || signal(j)> 3)%-> means it's not the begining of a mornal step
+                    isStep=false;
+                end
+            end
+            
+            if(isStep == true)
+                counterSteps= counterSteps+1;
+                StepArray(counterSteps,:)= signal(i:i+190)
+                i=i+190;
+            end
+            
+        end
+        
+        isStep= true;%intiallize default again to true value to check next time
+        
+                
+    end%end for, all analyzed steps inserted to 'Seperated' matrix
+    
+    Seperated= StepArray;
 
-L = length(t);
-if mod(length(t),2)
-    x = linspace(-L/2, L/2, L);
-else
-    x = linspace(-L/2 - 1, L/2, L);
-end
-f = x / (L * median(diff(t)));
-w = 2*pi*f;
-end
 
-
-function Spectral= mySpectralPeriodCalc(Signal,f)
-[pks,locs] = findpeaks(abs(Signal));
-[ Secondloc ]= second_max(pks,locs);
-Spectral= 1/abs(f(Secondloc));
-end
-
-
-function [ Secondloc ]= second_max(pks,locs)
-[~,index] = max(pks(pks<max(pks)));
-Secondloc= locs(index);
 end
 
 %---Functions Used in Step 1
@@ -598,44 +607,34 @@ end
 
 %---Functions Used in Step 2
 
-function sig = myLPF(w, sig, c)
+function [RealSeperated,RealcounterSteps]= RemoveAbnormal(Seperated)
+    %temp=zeros(length(signal));
+    isStep=true;
+    RealcounterSteps=0;
+    RealcounterSteps= zeros(size(Seperated))
+    tempMax=0;
+    %StepArray= zeros(length(signal));
+    %500 steps max, each step is 190 length max
+    
+    for i= 1:500
+        
+        tempMax= max(StepArray(i,:))
+        if (tempMax<17  || tempMax> 23)%maximum of each step is around 17-23 range
+            isStep=false;
+        end
+        
+        if(isStep == true)
+                RealcounterSteps= RealcounterSteps+1;
+                RealcounterSteps(RealcounterSteps,:)= Seperated(i,:);     %-> inserting the real step to the new matrix          
+        end  
+        
+        isStep= true;%intiallize default again to true value to check next time
+        
+                
+    end%end for, all analyzed steps inserted to 'Seperated' matrix
+    
 
-f = fftshift(fft(sig));
 
-inds = find(w < -c | w > c);
-f(inds) = 0;
-
-sig = real(ifft(ifftshift(f)));
-
-end
-
-function sig = myHPF(w, sig, c)
-
-f = fftshift(fft(sig));
-
-inds = find(w > -c & w < c);
-f(inds) = 0;
-
-sig = real(ifft(ifftshift(f)));
-
-end
-
-function sig = myBPF(w, sig, cl, ch)
-
-sig = myLPF(w, sig, ch);
-sig = myHPF(w, sig, cl);
-
-end
-
-function sig = myBSF(w, sig, cl, ch)
-
-f = fftshift(fft(sig));
-
-indsL = find(w < -cl | w > cl);
-indsH = find(w > -ch & w < ch);
-f(intersect(indsL,indsH)) = 0;
-
-sig = real(ifft(ifftshift(f)));
 
 end
 
